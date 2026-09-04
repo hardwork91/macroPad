@@ -205,7 +205,13 @@
     padding: 2px 8px;
     font-family: var(--mono);
     font-size: 12px;
-    margin-right: 6px;
+  }
+
+  .plus {
+    color: var(--text-dim);
+    font-family: var(--mono);
+    margin: 0 7px;
+    user-select: none;
   }
 
   button {
@@ -466,10 +472,7 @@
 
   function renderShortcut() {
     if (draft.shortcut) {
-      shortcutDisplay.innerHTML = draft.shortcut
-        .split(" + ")
-        .map(p => `<kbd>${p}</kbd>`)
-        .join("");
+      shortcutDisplay.innerHTML = comboHTML(draft.shortcut);
     } else {
       shortcutDisplay.innerHTML = '<span class="placeholder">Not assigned</span>';
     }
@@ -558,6 +561,13 @@
     return parts.length ? parts.join(" + ") : null;
   }
 
+  function comboHTML(combo) {
+    return combo
+      .split(" + ")
+      .map(p => `<kbd>${p}</kbd>`)
+      .join('<span class="plus">+</span>');
+  }
+
   window.addEventListener("keydown", e => {
     if (!listening) return;
     e.preventDefault();
@@ -565,7 +575,7 @@
     const combo = comboFromEvent(e);
     if (combo) {
       capturedCombo = combo;
-      captureView.innerHTML = combo.split(" + ").map(p => `<kbd>${p}</kbd>`).join("");
+      captureView.innerHTML = comboHTML(combo);
     }
   }, true);
 
