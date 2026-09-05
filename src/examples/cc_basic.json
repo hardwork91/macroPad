@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "cc_basic",
+  "name": "CC Basic",
+  "author": "adaptado del sketch original",
+  "color": "00FF00",
+  "vars": {},
+  "keys": [
+    { "type": "cc", "cc": 20, "behavior": "momentary", "pressValue": 127, "releaseValue": 0, "color": "0000FF" },
+    { "type": "cc", "cc": 21, "behavior": "momentary", "pressValue": 127, "releaseValue": 0, "color": "0000FF" },
+    { "type": "cc", "cc": 22, "behavior": "momentary", "pressValue": 127, "releaseValue": 0, "color": "0000FF" },
+    { "type": "cc", "cc": 23, "behavior": "momentary", "pressValue": 127, "releaseValue": 0, "color": "0000FF" },
+    { "type": "cc", "cc": 24, "behavior": "momentary", "pressValue": 127, "releaseValue": 0, "color": "0000FF" },
+    { "type": "cc", "cc": 25, "behavior": "momentary", "pressValue": 127, "releaseValue": 0, "color": "0000FF" },
+    { "type": "cc", "cc": 26, "behavior": "momentary", "pressValue": 127, "releaseValue": 0, "color": "0000FF" },
+    { "type": "cc", "cc": 27, "behavior": "momentary", "pressValue": 127, "releaseValue": 0, "color": "0000FF" },
+    { "type": "cc", "cc": 80, "behavior": "toggle", "onValue": 127, "offValue": 0, "color": "00FF00" },
+    { "type": "cc", "cc": 81, "behavior": "toggle", "onValue": 127, "offValue": 0, "color": "00FF00" },
+    { "type": "cc", "cc": 82, "behavior": "toggle", "onValue": 127, "offValue": 0, "color": "00FF00" },
+    { "type": "cc", "cc": 83, "behavior": "toggle", "onValue": 127, "offValue": 0, "color": "00FF00" },
+    { "type": "cc", "cc": 84, "behavior": "toggle", "onValue": 127, "offValue": 0, "color": "00FF00" },
+    { "type": "cc", "cc": 85, "behavior": "toggle", "onValue": 127, "offValue": 0, "color": "00FF00" },
+    { "type": "cc", "cc": 86, "behavior": "toggle", "onValue": 127, "offValue": 0, "color": "00FF00" },
+    { "type": "cc", "cc": 87, "behavior": "toggle", "onValue": 127, "offValue": 0, "color": "00FF00" }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "scale_play",
+  "name": "Scale Player",
+  "author": "adaptado del sketch original",
+  "color": "FF00B4",
+  "onEnter": { "indicate": { "var": "scale", "color": "FFFFFF", "holdMs": 250 } },
+  "vars": {
+    "scale":  { "init": 0, "min": 0, "max": 5, "wrap": true },
+    "root":   { "init": 60, "min": 0, "max": 127 },
+    "octave": { "init": 0, "min": -3, "max": 3 }
+  },
+  "keys": [
+    { "type": "scale_note", "degree": 0, "color": "FF00B4" },
+    { "type": "scale_note", "degree": 1, "color": "FF00B4" },
+    { "type": "scale_note", "degree": 2, "color": "FF00B4" },
+    { "type": "scale_note", "degree": 3, "color": "FF00B4" },
+    { "type": "scale_note", "degree": 4, "color": "FF00B4" },
+    { "type": "scale_note", "degree": 5, "color": "FF00B4" },
+    { "type": "scale_note", "degree": 6, "color": "FF00B4" },
+    { "type": "scale_note", "degree": 7, "color": "FF00B4" },
+    { "type": "param", "set": [ { "var": "scale", "delta": -1 } ], "indicate": { "var": "scale", "color": "FFFFFF", "holdMs": 250 } },
+    { "type": "param", "set": [ { "var": "scale", "delta": 1 } ],  "indicate": { "var": "scale", "color": "FFFFFF", "holdMs": 250 } },
+    { "type": "param", "set": [ { "var": "root", "delta": -1 } ], "flash": "FFA000", "limitFlash": "FF0000" },
+    { "type": "param", "set": [ { "var": "root", "delta": 1 } ],  "flash": "FFA000", "limitFlash": "FF0000" },
+    { "type": "param", "set": [ { "var": "octave", "delta": -1 } ], "flash": "B400FF", "limitFlash": "FF0000" },
+    { "type": "param", "set": [ { "var": "octave", "delta": 1 } ],  "flash": "B400FF", "limitFlash": "FF0000" },
+    { "type": "none" },
+    { "type": "none" }
+  ]
+}

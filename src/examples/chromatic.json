@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "chromatic",
+  "name": "Chromatic Notes",
+  "author": "adaptado del sketch original",
+  "color": "0096FF",
+  "vars": {
+    "octave": { "init": 0, "min": -3, "max": 3 }
+  },
+  "keys": [
+    { "type": "note", "note": 60, "color": "0096FF" },
+    { "type": "note", "note": 61, "color": "0096FF" },
+    { "type": "note", "note": 62, "color": "0096FF" },
+    { "type": "note", "note": 63, "color": "0096FF" },
+    { "type": "note", "note": 64, "color": "0096FF" },
+    { "type": "note", "note": 65, "color": "0096FF" },
+    { "type": "note", "note": 66, "color": "0096FF" },
+    { "type": "note", "note": 67, "color": "0096FF" },
+    { "type": "note", "note": 68, "color": "0096FF" },
+    { "type": "note", "note": 69, "color": "0096FF" },
+    { "type": "note", "note": 70, "color": "0096FF" },
+    { "type": "note", "note": 71, "color": "0096FF" },
+    { "type": "param", "set": [ { "var": "octave", "delta": -1 } ], "flash": "B400FF", "limitFlash": "FF0000" },
+    { "type": "param", "set": [ { "var": "octave", "delta": 1 } ],  "flash": "B400FF", "limitFlash": "FF0000" },
+    { "type": "none" },
+    { "type": "none" }
+  ]
+}

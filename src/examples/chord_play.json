@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "chord_play",
+  "name": "Chord Player",
+  "author": "adaptado del sketch original",
+  "color": "FF5000",
+  "onEnter": { "indicate": { "var": "scale", "color": "FFFFFF", "holdMs": 250 } },
+  "vars": {
+    "scale":     { "init": 0, "min": 0, "max": 5, "wrap": true },
+    "degree":    { "init": 0, "min": 0, "max": 6, "wrap": true },
+    "voices":    { "init": 3, "min": 3, "max": 6, "wrap": true },
+    "inversion": { "init": 0, "min": 0, "wrap": true, "maxVar": "voices", "maxOffset": -1 },
+    "root":      { "init": 60, "min": 0, "max": 127 },
+    "octave":    { "init": 0, "min": -3, "max": 3 }
+  },
+  "keys": [
+    { "type": "chord", "degree": 0, "color": "FF5000" },
+    { "type": "chord", "degree": 1, "color": "FF5000" },
+    { "type": "chord", "degree": 2, "color": "FF5000" },
+    { "type": "chord", "degree": 3, "color": "FF5000" },
+    { "type": "chord", "degree": 4, "color": "FF5000" },
+    { "type": "chord", "degree": 5, "color": "FF5000" },
+    { "type": "chord", "degree": 6, "color": "FF5000" },
+    { "type": "chord", "degree": 7, "color": "FF5000" },
+    { "type": "param", "set": [ { "var": "scale", "delta": 1 }, { "var": "degree", "value": 0 } ], "indicate": { "var": "scale", "color": "FFFFFF", "holdMs": 250 } },
+    { "type": "param", "set": [ { "var": "degree", "delta": 1 } ], "indicate": { "var": "degree", "color": "FFA000", "holdMs": 220 } },
+    { "type": "param", "set": [ { "var": "inversion", "delta": 1 } ], "flash": "FF5000" },
+    { "type": "param", "set": [ { "var": "voices", "delta": 1 } ], "flash": "FF5000" },
+    { "type": "param", "set": [ { "var": "octave", "delta": -1 } ], "flash": "B400FF", "limitFlash": "FF0000" },
+    { "type": "param", "set": [ { "var": "octave", "delta": 1 } ],  "flash": "B400FF", "limitFlash": "FF0000" },
+    { "type": "none" },
+    { "type": "none" }
+  ]
+}
