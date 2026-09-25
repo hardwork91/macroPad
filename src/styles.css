@@ -340,7 +340,7 @@ code {
 }
 .pad-cell.lit {
   /* El LED ilumina hacia fuera, como haria el difusor de la tecla. */
-  --key-glow: 0 0 16px -1px var(--cell-led, transparent);
+  --key-glow: 0 0 24px -1px var(--cell-led, transparent);
 }
 .pad-cell.pressed {
   --key-glow: 0 0 24px 2px var(--cell-led, var(--accent));
