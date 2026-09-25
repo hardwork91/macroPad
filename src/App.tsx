@@ -1,21 +1,27 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useI18n } from "./i18n";
 import { useAppStore } from "./store/appStore";
 import { EditorView } from "./ui/EditorView";
 import { LibraryView } from "./ui/LibraryView";
 import { LiveView } from "./ui/LiveView";
 import { SlotsView } from "./ui/SlotsView";
+import { Splash } from "./ui/Splash";
 import { TopBar } from "./ui/TopBar";
 
 export default function App() {
   const { t } = useI18n();
   const { ready, init, view, toasts, dismissToast } = useAppStore();
+  const [introDone, setIntroDone] = useState(false);
 
   useEffect(() => {
     void init();
     // init es idempotente; solo debe correr al montar
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // El intro cubre la carga inicial: para cuando termina, la
+  // biblioteca ya esta lista y no se ve ningun parpadeo.
+  if (!introDone) return <Splash onDone={() => setIntroDone(true)} />;
 
   if (!ready) {
     return <div className="loading">{t("common.loading")}</div>;

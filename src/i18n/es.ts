@@ -58,7 +58,7 @@ export const es: Record<string, string> = {
   "device.velocity": "Velocity",
   "device.brightness": "Brillo LEDs",
   "device.scales": "Escalas",
-  "device.scalesHint": "Siete intervalos (semitonos desde la raíz) por escala. Las tools referencian escalas por su posición en esta lista.",
+  "device.scalesHint": "Cada escala es una lista de 5-12 intervalos en semitonos desde la raíz. Las tools referencian escalas por su posición en esta lista.",
   "device.deleteScaleConfirm": "¿Eliminar la escala \"{name}\"? Las tools que la usan por índice pueden cambiar de sonido.",
   "device.newScalePlaceholder": "nombre_de_escala",
 

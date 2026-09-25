@@ -1,4 +1,4 @@
-/* MacroPad Tools Editor — tema oscuro; los colores de tools/teclas
+/* OCTA CTRL — tema oscuro; los colores de tools/teclas
    son los protagonistas. */
 
 :root {
@@ -169,8 +169,16 @@ code {
   letter-spacing: 0.04em;
 }
 .brand-icon {
-  color: var(--accent);
-  font-size: 18px;
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 8px rgba(124, 140, 248, 0.35));
+}
+.brand-name {
+  font-size: 15px;
+  letter-spacing: 0.16em;
+  white-space: nowrap;
 }
 .tabs {
   display: flex;
@@ -263,8 +271,9 @@ code {
   background: linear-gradient(160deg, #131417, #0b0c0e 65%);
   border: 1px solid #202127;
   border-radius: 16px;
-  margin: 14px 0;
+  margin: 14px auto;   /* centrado: el pad es el protagonista */
   width: fit-content;
+  max-width: 100%;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 14px 30px -16px rgba(0, 0, 0, 0.7);
 }
 .pad-cell {
@@ -907,4 +916,238 @@ code {
   border: 1px solid #2c3752;
   color: #b9c4e8;
   margin-left: 8px;
+}
+
+/* ============================================================
+   INTRO
+   Negro y la animacion de marca. El clip trae su propio
+   movimiento; aqui solo se encuadra y se funde al salir.
+   ============================================================ */
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #000;
+  display: grid;
+  place-items: center;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+.splash.leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.splash-motion {
+  width: clamp(260px, 52vmin, 460px);
+  height: auto;
+  animation: splash-fade-in 0.4s ease-out both;
+}
+
+@keyframes splash-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.splash-skip {
+  position: absolute;
+  right: 20px;
+  bottom: 18px;
+  background: none;
+  border: none;
+  color: #4a4d55;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  opacity: 0;
+  animation: splash-fade-in 0.5s ease-out 0.8s forwards;
+}
+.splash-skip:hover {
+  color: var(--text-dim);
+  background: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-motion,
+  .splash-skip {
+    animation-duration: 0.25s !important;
+    animation-delay: 0s !important;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE
+   El grid del pad manda: son 8 columnas fijas, asi que por debajo
+   de cierto ancho hay que encogerlo antes que romperlo.
+   ============================================================ */
+
+/* Tablet y portatil estrecho */
+@media (max-width: 1100px) {
+  main {
+    padding: 18px;
+  }
+  .editor-right {
+    position: static; /* pegajoso en columna estrecha estorba mas que ayuda */
+  }
+}
+
+/* Movil y tablet en vertical */
+@media (max-width: 760px) {
+  /* Un item flex no encoge por debajo de su contenido salvo que se le
+     diga: sin este min-width los paneles con flex-basis fijo (380px,
+     520px...) empujan la pagina entera mas alla del viewport. */
+  .view {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+  .view > *,
+  .panel-card,
+  .panel-card.grow,
+  .device-settings,
+  .live-log,
+  .editor-left,
+  .editor-right,
+  .editor-cols {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .scales-table,
+  .vars-table,
+  .seq-grid,
+  .field-row,
+  .json-panel,
+  .field {
+    min-width: 0;
+    max-width: 100%;
+  }
+  main {
+    padding: 12px;
+  }
+
+  .topbar {
+    padding: 10px 12px;
+    gap: 10px;
+    row-gap: 8px;
+  }
+  .brand-name {
+    font-size: 13px;
+  }
+  /* La navegacion pasa a ocupar su propia fila completa */
+  .tabs {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .tab {
+    padding: 8px 10px;
+    font-size: 12px;
+    flex: 1;
+    text-align: center;
+  }
+  .topbar-right {
+    gap: 6px;
+  }
+  .topbar-right select,
+  .topbar-right button {
+    font-size: 12px;
+    padding: 7px 10px;
+  }
+
+  /* El pad se encoge en vez de desbordar */
+  .pad-grid {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    width: 100%;
+    gap: 5px;
+    padding: 9px;
+  }
+  .pad-grid.compact {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 4px;
+  }
+  .pad-label,
+  .pad-sub {
+    display: none; /* a este tamano el texto es ilegible; manda el color */
+  }
+  .pad-num {
+    font-size: 8px;
+    top: 2px;
+    left: 3px;
+  }
+
+  .panel-card {
+    padding: 14px 15px;
+    border-radius: 12px;
+  }
+  .editor-meta,
+  .meta-fields {
+    gap: 10px;
+  }
+  .meta-actions {
+    margin-left: 0;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  /* Las tablas anchas se desplazan dentro de su caja, no arrastran la pagina */
+  .vars-table,
+  .scales-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .vars-head,
+  .vars-row,
+  .vars-row.list {
+    min-width: 520px;
+  }
+  .scale-row {
+    min-width: 470px;
+  }
+
+  .seq-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .field-row {
+    gap: 10px;
+  }
+  .live-controls {
+    margin-left: 0;
+    width: 100%;
+  }
+  .toasts {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+  .toast {
+    max-width: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .seq-grid {
+    grid-template-columns: 1fr;
+  }
+  .library-grid {
+    grid-template-columns: 1fr;
+  }
+  .library-head {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .library-actions {
+    margin-left: 0;
+    width: 100%;
+  }
+  .library-actions button {
+    flex: 1;
+  }
+}
+
+/* La pagina nunca debe desplazarse en horizontal */
+body {
+  overflow-x: hidden;
 }

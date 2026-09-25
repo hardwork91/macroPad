@@ -1,6 +1,7 @@
 // Barra superior: navegación, idioma, conexión y sincronización.
 
 import { useMemo, useState } from "react";
+import brandIcon from "../assets/octa-icon.png";
 import { useI18n } from "../i18n";
 import { hasErrors, validateDevice, validateTool } from "../schema/validate";
 import { serialSupported } from "../device/SerialDeviceLink";
@@ -67,8 +68,8 @@ export function TopBar() {
   return (
     <header className="topbar">
       <div className="brand">
-        <span className="brand-icon">▦</span>
-        <span className="brand-name">MacroPad Tools</span>
+        <img src={brandIcon} alt="" className="brand-icon" />
+        <span className="brand-name">OCTA CTRL</span>
       </div>
 
       <nav className="tabs">
