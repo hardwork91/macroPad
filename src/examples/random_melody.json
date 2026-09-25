@@ -4,7 +4,6 @@
   "name": "Random Melody",
   "author": "portado del sketch de 7 modos",
   "color": "6E50FF",
-  "onExit": { "allNotesOff": true },
   "vars": {
     "steps":     { "init": 7, "values": [1, 2, 3, 4, 5, 6, 7, 8] },
     "rate":      { "init": 3, "values": ["1/2", "1/4", "1/8", "1/16", "1/32"] },

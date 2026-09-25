@@ -195,9 +195,9 @@ describe("v2: hold_select", () => {
     expect(validateTool(t, dev).issues.some((i) => i.msgKey === "val.holdSelectNeedsList")).toBe(true);
   });
 
-  it("rejects more values than keys on the pad", () => {
+  it("rejects more values than the top row of keys", () => {
     const t = structuredClone(minorGlide) as unknown as ToolFile;
-    t.vars.gate.values = Array.from({ length: 20 }, (_, i) => i);
+    t.vars.gate.values = Array.from({ length: 12 }, (_, i) => i);
     expect(validateTool(t, dev).issues.some((i) => i.msgKey === "val.holdSelectTooManyValues")).toBe(true);
   });
 

@@ -238,7 +238,7 @@ export const en: Record<string, string> = {
   "val.varNeedsMin": "variable \"{name}\" needs a min",
   "val.keyNeedsNewerSchema": "key {key} uses \"{type}\", which needs schemaVersion {version}",
   "val.holdSelectNeedsList": "key {key} selects \"{name}\", but that variable has no values list",
-  "val.holdSelectTooManyValues": "key {key} selects a variable with {n} values, more than the {max} keys on the pad",
+  "val.holdSelectTooManyValues": "key {key} selects a variable with {n} values, more than the {max} keys of the top row",
   "val.seqStepOutOfRange": "key {key} points at step {step}, but the sequencer only has steps 0-{max}",
   "val.holdAssignUnknownHits": "key {key} assigns a {value}-hit ratchet, but the sequencer offers: {hits}",
   "val.sequencerNeedsV2": "a sequencer needs schemaVersion 2",

@@ -238,7 +238,7 @@ export const es: Record<string, string> = {
   "val.varNeedsMin": "la variable \"{name}\" necesita un min",
   "val.keyNeedsNewerSchema": "la tecla {key} usa \"{type}\", que requiere schemaVersion {version}",
   "val.holdSelectNeedsList": "la tecla {key} elige \"{name}\", pero esa variable no tiene lista de valores",
-  "val.holdSelectTooManyValues": "la tecla {key} elige una variable con {n} valores, más que las {max} teclas del pad",
+  "val.holdSelectTooManyValues": "la tecla {key} elige una variable con {n} valores, más que las {max} teclas de la fila superior",
   "val.seqStepOutOfRange": "la tecla {key} apunta al paso {step}, pero el secuenciador sólo llega al paso {max}",
   "val.holdAssignUnknownHits": "la tecla {key} asigna un ratchet de {value} golpes, pero el secuenciador ofrece: {hits}",
   "val.sequencerNeedsV2": "un secuenciador requiere schemaVersion 2",

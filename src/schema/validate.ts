@@ -7,6 +7,7 @@ import { z } from "zod";
 import {
   CTRL_KEY_INDEX,
   DeviceConfig,
+  GRID_COLS,
   KeyDef,
   KeyHoldSelect,
   KeyParam,
@@ -176,8 +177,7 @@ const toolShapeSchema = z
     author: z.string().optional(),
     color: hexColor,
     onEnter: z.object({ indicate: indicateSchema }).optional(),
-    onExit: z.object({ allNotesOff: z.boolean().optional() }).optional(),
-    vars: z.record(varDefSchema).optional(),
+      vars: z.record(varDefSchema).optional(),
     keys: z.array(z.unknown()),
     sequencer: sequencerSchema.optional(),
   })
@@ -398,12 +398,12 @@ export function validateTool(json: unknown, device?: DeviceConfig | null): ToolV
         issues.push(missingVarIssue(path, h.var, varNames));
       } else if (!def.values) {
         issues.push({ level: "error", path, msgKey: "val.holdSelectNeedsList", params: { key: keyNo, name: h.var } });
-      } else if (def.values.length > NUM_KEYS) {
+      } else if (def.values.length > GRID_COLS) {
         issues.push({
           level: "error",
           path,
           msgKey: "val.holdSelectTooManyValues",
-          params: { key: keyNo, n: def.values.length, max: NUM_KEYS },
+          params: { key: keyNo, n: def.values.length, max: GRID_COLS },
         });
       }
     }

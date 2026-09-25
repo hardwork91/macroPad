@@ -110,6 +110,17 @@ reference JSONs in `src/examples/`. Contract tests in `tests/schema.test.ts`.
   came out 12, 15, 12, going *down* at the octave. Firmware must use the real
   scale length, not a hardcoded 7, when wrapping degrees.
 
+**Modifier scope.** A `hold_select` or `hold_assign` only captures the **top row**
+(keys 1–8) while held, so a list variable can hold at most 8 values. The bottom
+row keeps its own action, which is what lets Random Melody keep cycling scale and
+root while the mutation modifier is held. If several modifiers are held at once,
+the lowest key index wins.
+
+**Guaranteed behaviour, not declared.** Switching tools always sends All Notes
+Off and resets every var to its `init`. It is a safety property, so it is not a
+JSON field you can turn off. `seq_action` start/stop move the pad's local
+transport only; they never emit 0xFA/0xFC back to the host.
+
 Version coherence is enforced: using a v2 feature in a tool that declares
 `schemaVersion: 1` is an error, not silent acceptance.
 

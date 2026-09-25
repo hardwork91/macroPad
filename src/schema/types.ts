@@ -136,9 +136,12 @@ export interface KeySeqAction {
 }
 
 /**
- * Modificador: mientras se mantiene pulsada, las primeras N teclas
- * (N = nº de valores de la var) eligen el valor de `var`.
- * Es el patrón "Hold Button 11 + 1-5" del sketch original.
+ * Modificador: mientras se mantiene pulsada, las primeras N teclas de la
+ * FILA SUPERIOR (N = nº de valores de la var, por tanto N <= 8) eligen el
+ * valor de `var`. Es el patrón "Hold Button 11 + 1-5" del sketch original.
+ * La fila inferior conserva su acción propia mientras el modificador está
+ * mantenido, que es lo que permite en Random Melody seguir ciclando escala
+ * y raíz con el modificador de mutación pulsado.
  */
 export interface KeyHoldSelect {
   type: "hold_select";
@@ -240,7 +243,7 @@ export interface ToolFile {
   author?: string;
   color: HexColor;
   onEnter?: { indicate: IndicateSpec };
-  onExit?: { allNotesOff?: boolean };
+  /** Nota: el All Notes Off al salir es incondicional, no se declara. */
   vars: Record<string, VarDef>;
   keys: KeyDef[];
   /** v2 — presente sólo en tools con secuenciador. */
