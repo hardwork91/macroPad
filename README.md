@@ -80,11 +80,39 @@ Note for the firmware: the web writes a `slots` field (16 entries, tool id or
 Ctrl+key tool selector. `toolOrder` stays in sync for the current cycling
 gesture.
 
-## Data contract (schema v1)
+## Data contract
 
 See `src/schema/` (types + validation, the single source of truth) and the
-reference JSONs in `src/examples/` — the same files embedded in the firmware
-`tool_interpreter_esp32s3.ino`. Contract tests in `tests/schema.test.ts`.
+reference JSONs in `src/examples/`. Contract tests in `tests/schema.test.ts`.
+
+**v1** is the reactive model: six key primitives (`none`, `note`, `scale_note`,
+`chord`, `cc`, `param`) that only react to press and release. Still valid.
+
+**v2** adds time and generative sequencing, so the three generative modes of the
+7-mode firmware can be expressed declaratively:
+
+- **List variables.** A var with `values` stores the *index* into the list, so a
+  delta of ±1 walks it. Values may be numbers or note durations (`"1/16"`).
+- **`sequencer` block** (`type: "phrase"`). A phrase of up to `maxSteps` raw
+  notes drawn from `noteRange`, quantised to a scale (fixed by name or chosen by
+  a var). Parameters: `steps`, `rate`, `transpose`, `gate` (a percentage of the
+  slot or a fixed duration), `mutation`, `hold`, and per-step `ratchet` bursts
+  with a linear velocity ramp.
+- **Four key primitives**: `seq_step` (a step of the phrase, lit by the
+  playhead), `seq_action` (regenerate/start/stop/toggle), `hold_select` (hold it
+  and the first N keys pick a value for a list var) and `hold_assign` (hold it
+  and the step keys assign a ratchet).
+- **Clock** lives in `device.json`. The firmware only has to be a *slave*: count
+  incoming `0xF8` pulses and honour Start/Continue/Stop. `"internal"` is
+  optional and only needed to be a master.
+- **Scales** may now have 5–12 degrees. v1 forced exactly 7, which is why
+  `minor_pentatonic` used to be faked as `[0,3,5,7,10,12,15]` — its degrees 5–7
+  came out 12, 15, 12, going *down* at the octave. Firmware must use the real
+  scale length, not a hardcoded 7, when wrapping degrees.
+
+Version coherence is enforced: using a v2 feature in a tool that declares
+`schemaVersion: 1` is an error, not silent acceptance.
+
 
 ## Stack
 
