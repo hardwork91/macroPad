@@ -11,6 +11,23 @@ interface Pending {
   collector: (lines: string[]) => boolean; // true cuando la respuesta está completa
 }
 
+/** Un pad sano responde en milisegundos; 5 s es holgura de sobra. */
+const COMMAND_TIMEOUT_MS = 5000;
+
+/**
+ * Traza del trafico en la consola. Se enciende con
+ * `localStorage.setItem("macropad-debug-serial", "1")` y recargando:
+ * es la forma de ver que esta pasando en el cable sin ocupar el puerto
+ * con un monitor serie, que es exclusivo.
+ */
+const DEBUG_SERIAL = (() => {
+  try {
+    return localStorage.getItem("macropad-debug-serial") === "1";
+  } catch {
+    return false;
+  }
+})();
+
 export function serialSupported(): boolean {
   return typeof navigator !== "undefined" && "serial" in navigator;
 }
@@ -116,11 +133,35 @@ export class SerialDeviceLink implements DeviceLink {
 
   // ---------- interno ----------
 
-  private async command(cmd: string, collector: (lines: string[]) => boolean): Promise<string[]> {
+  /**
+   * Sin timeout, una respuesta perdida deja la promesa colgada para
+   * siempre Y bloquea la cola: todo comando posterior espera detrás de
+   * ella y el enlace queda muerto sin avisar a nadie.
+   */
+  private async command(
+    cmd: string,
+    collector: (lines: string[]) => boolean,
+    timeoutMs = COMMAND_TIMEOUT_MS,
+  ): Promise<string[]> {
     if (!this._connected || !this.writer) throw new Error("Not connected");
+
+    let entry: Pending;
     const promise = new Promise<string[]>((resolve, reject) => {
-      this.queue.push({ resolve, reject, collector });
+      entry = { resolve, reject, collector };
+      this.queue.push(entry);
     });
+
+    const timer = setTimeout(() => {
+      const i = this.queue.indexOf(entry);
+      if (i < 0) return; // ya respondió
+      this.queue.splice(i, 1);
+      if (i === 0) this.pendingLines = [];
+      entry.reject(new Error(`Timeout waiting for a reply to "${cmd.split("\n")[0]}"`));
+    }, timeoutMs);
+
+    void promise.catch(() => {}).finally(() => clearTimeout(timer));
+
+    if (DEBUG_SERIAL) console.debug("[serial] >", cmd.split("\n")[0]);
     await this.writer.write(new TextEncoder().encode(cmd + "\n"));
     return promise;
   }
@@ -156,6 +197,8 @@ export class SerialDeviceLink implements DeviceLink {
   private pendingLines: string[] = [];
 
   private handleLine(line: string) {
+    if (DEBUG_SERIAL) console.debug("[serial] <", line);
+
     // Eventos asíncronos: pueden intercalarse con respuestas
     let m;
     if ((m = line.match(/^EV\s+PRESS\s+(\d+)/))) {

@@ -254,4 +254,5 @@ export const es: Record<string, string> = {
   "val.midiOutAllDisabled": "todas las salidas MIDI están desactivadas, el pad no enviará nada",
   "vars.toList": "Convertir en lista de valores",
   "vars.toRange": "Volver a un rango min/max",
+  "live.toggleFailed": "No se pudo cambiar el modo en vivo en el dispositivo",
 };

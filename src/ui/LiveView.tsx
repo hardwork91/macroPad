@@ -10,7 +10,7 @@ import { keyIcon } from "./utils";
 
 export function LiveView() {
   const { t } = useI18n();
-  const { tools, device } = useAppStore();
+  const { tools, device, toast } = useAppStore();
   const {
     conn,
     kind,
@@ -26,6 +26,16 @@ export function LiveView() {
     toggleDemo,
     demoRunning,
   } = useLinkStore();
+
+  // Si LIVE falla, el estado no cambia y el boton parece no hacer nada:
+  // sin este aviso el fallo es invisible.
+  async function handleToggleLive() {
+    try {
+      await setLive(!live);
+    } catch (err) {
+      toast("error", err instanceof Error ? err.message : t("live.toggleFailed"));
+    }
+  }
 
   if (conn !== "connected") {
     return (
@@ -70,7 +80,7 @@ export function LiveView() {
                 ))}
               </select>
             </label>
-            <button type="button" className={live ? "danger-outline" : "primary"} onClick={() => setLive(!live)}>
+            <button type="button" className={live ? "danger-outline" : "primary"} onClick={handleToggleLive}>
               {live ? t("live.stop") : t("live.start")}
             </button>
             {kind === "mock" && live && (
