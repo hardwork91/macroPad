@@ -1,7 +1,7 @@
 // Grid 2x8 del pad físico. Reutilizado por Slots, Editor y En vivo.
-// Índice 0-7 = fila superior, 8-15 = inferior; 15 = Ctrl.
+// Índice 0-7 = fila superior, 8-15 = inferior; 15 = Func.
 
-import { CTRL_KEY_INDEX, NUM_KEYS } from "../schema/types";
+import { FUNC_KEY_INDEX, NUM_KEYS } from "../schema/types";
 import { cssColor } from "./utils";
 
 export interface PadCell {
@@ -57,7 +57,7 @@ export function PadGrid({ cells, onCellClick, onCellDown, onCellUp, draggable, o
             onPointerDown={onCellDown ? () => onCellDown(i) : undefined}
             onPointerUp={onCellUp ? () => onCellUp(i) : undefined}
             onPointerLeave={onCellUp ? () => onCellUp(i) : undefined}
-            draggable={draggable && !c.disabled && i !== CTRL_KEY_INDEX}
+            draggable={draggable && !c.disabled && i !== FUNC_KEY_INDEX}
             onDragStart={
               draggable
                 ? (e) => {

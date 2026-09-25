@@ -45,8 +45,8 @@ export const es: Record<string, string> = {
 
   // vista slots
   "slots.title": "Slots de tools",
-  "slots.subtitle": "Sostén Ctrl (tecla 16) en el pad y esto es lo que verás. Toca una tecla para asignar una tool; arrastra para intercambiar.",
-  "slots.ctrlTooltip": "La tecla 16 es la tecla Ctrl: abre el selector de tools y no puede llevar una tool.",
+  "slots.subtitle": "Sostén Func (tecla 16) en el pad y esto es lo que verás. Toca una tecla para asignar una tool; arrastra para intercambiar.",
+  "slots.ctrlTooltip": "La tecla 16 es la tecla Func: abre el selector de tools y no puede llevar una tool.",
   "slots.empty": "Vacío",
   "slots.assignHint": "Click para asignar una tool",
   "slots.assignTitle": "Asignar tool a la tecla {key}",
@@ -77,7 +77,7 @@ export const es: Record<string, string> = {
   "editor.jsonParseError": "Eso no es JSON válido",
   "editor.jsonInvalid": "El JSON tiene errores de validación — corrígelos antes de aplicar",
   "editor.jsonApplied": "JSON aplicado",
-  "editor.ctrlKeyHint": "La tecla 16 es la tecla Ctrl a nivel de producto: sostenida al encender entra al bootloader, sostenida en uso abre el selector de tools. Su acción aquí solo corre con una pulsación simple.",
+  "editor.ctrlKeyHint": "La tecla 16 es la tecla Func a nivel de producto: sostenida al encender entra al bootloader, sostenida en uso abre el selector de tools. Su acción aquí solo corre con una pulsación simple.",
 
   // vars
   "vars.title": "Parámetros de la tool (vars)",
@@ -187,7 +187,7 @@ export const es: Record<string, string> = {
   "val.scaleMissing": "scaleOrder referencia \"{name}\", que no está definida en scales",
   "val.scaleMissingSuggest": "scaleOrder referencia \"{name}\", que no está definida en scales — ¿quisiste decir \"{suggestion}\"?",
   "val.slotsLength": "slots debe tener exactamente {expected} entradas (hay {count})",
-  "val.ctrlSlotReserved": "el slot 16 es la tecla Ctrl y debe quedar vacío",
+  "val.ctrlSlotReserved": "el slot 16 es la tecla Func y debe quedar vacío",
   "val.slotUnknownTool": "referencia la tool \"{id}\", que no está en la biblioteca",
 
   // --- v2 ---

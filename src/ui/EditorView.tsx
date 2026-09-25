@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useI18n } from "../i18n";
-import { CTRL_KEY_INDEX, MAX_SEQ_STEPS, SequencerSpec, ToolFile, VarDef, referencedVars } from "../schema/types";
+import { FUNC_KEY_INDEX, MAX_SEQ_STEPS, SequencerSpec, ToolFile, VarDef, referencedVars } from "../schema/types";
 import { validateTool } from "../schema/validate";
 import { useAppStore } from "../store/appStore";
 import { ColorField, IssueList, NumField, SelectField, TextField, ValidationBadge } from "./common";
@@ -55,7 +55,7 @@ function ToolEditor({ toolId }: { toolId: string }) {
     sub: k.type === "none" ? "" : k.type,
     selected: i === selectedKey,
     error: !["none", "note", "scale_note", "chord", "cc", "param"].includes(k.type),
-    title: i === CTRL_KEY_INDEX ? t("editor.ctrlKeyHint") : undefined,
+    title: i === FUNC_KEY_INDEX ? t("editor.ctrlKeyHint") : undefined,
   }));
 
   function commitId() {

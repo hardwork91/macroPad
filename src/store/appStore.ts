@@ -5,7 +5,7 @@
 import { create } from "zustand";
 import { get as idbGet, set as idbSet } from "idb-keyval";
 import {
-  CTRL_KEY_INDEX,
+  FUNC_KEY_INDEX,
   DeviceConfig,
   KeySnippet,
   NUM_KEYS,
@@ -74,7 +74,7 @@ function seedDevice(): DeviceConfig {
   const base = structuredClone(deviceExample) as DeviceConfig;
   const slots: (string | null)[] = Array(NUM_KEYS).fill(null);
   base.toolOrder.forEach((id, i) => {
-    if (i < CTRL_KEY_INDEX) slots[i] = id;
+    if (i < FUNC_KEY_INDEX) slots[i] = id;
   });
   return syncToolOrder({ ...base, slots });
 }
@@ -213,7 +213,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
 
   setSlot: (slot, toolId) => {
-    if (slot === CTRL_KEY_INDEX) return; // la Ctrl no es asignable
+    if (slot === FUNC_KEY_INDEX) return; // la Func no es asignable
     const st = get();
     const slots = [...(st.device.slots ?? Array(NUM_KEYS).fill(null))];
     slots[slot] = toolId;

@@ -1,9 +1,9 @@
-// Pantalla principal: asignación Ctrl+tecla -> tool (slots) y
+// Pantalla principal: asignación Func+tecla -> tool (slots) y
 // configuración global del dispositivo (device.json).
 
 import { useMemo, useState } from "react";
 import { useI18n } from "../i18n";
-import { CTRL_KEY_INDEX, NUM_KEYS } from "../schema/types";
+import { FUNC_KEY_INDEX, NUM_KEYS } from "../schema/types";
 import { validateDevice } from "../schema/validate";
 import { useAppStore } from "../store/appStore";
 import { IssueList, Modal, NumField } from "./common";
@@ -19,8 +19,8 @@ export function SlotsView() {
   const deviceIssues = useMemo(() => validateDevice(device, Object.keys(tools)).issues, [device, tools]);
 
   const cells: PadCell[] = slots.map((id, i) => {
-    if (i === CTRL_KEY_INDEX) {
-      return { ctrl: true, label: "Ctrl", disabled: true, title: t("slots.ctrlTooltip") };
+    if (i === FUNC_KEY_INDEX) {
+      return { ctrl: true, label: "Func", disabled: true, title: t("slots.ctrlTooltip") };
     }
     const tool = id ? tools[id] : null;
     if (!tool) return { label: "—", sub: t("slots.empty"), title: t("slots.assignHint") };
@@ -28,7 +28,7 @@ export function SlotsView() {
   });
 
   function swapSlots(from: number, to: number) {
-    if (to === CTRL_KEY_INDEX || from === CTRL_KEY_INDEX) return;
+    if (to === FUNC_KEY_INDEX || from === FUNC_KEY_INDEX) return;
     const next = [...slots];
     [next[from], next[to]] = [next[to], next[from]];
     updateDevice((d) => ({ ...d, slots: next }));
@@ -39,7 +39,7 @@ export function SlotsView() {
       <section className="panel-card grow">
         <h2>{t("slots.title")}</h2>
         <p className="muted">{t("slots.subtitle")}</p>
-        <PadGrid cells={cells} onCellClick={(i) => i !== CTRL_KEY_INDEX && setAssigning(i)} draggable onSwap={swapSlots} />
+        <PadGrid cells={cells} onCellClick={(i) => i !== FUNC_KEY_INDEX && setAssigning(i)} draggable onSwap={swapSlots} />
         <IssueList issues={deviceIssues} />
       </section>
 

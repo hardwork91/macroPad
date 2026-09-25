@@ -9,7 +9,7 @@
 export const SCHEMA_VERSION = 2;
 export const SUPPORTED_SCHEMA_VERSIONS = [1, 2] as const;
 export const NUM_KEYS = 16;
-export const CTRL_KEY_INDEX = 15; // tecla 16 = Ctrl (selector de tools)
+export const FUNC_KEY_INDEX = 15; // tecla 16 = Ctrl (selector de tools)
 export const GRID_ROWS = 2;
 export const GRID_COLS = 8;
 
@@ -257,7 +257,7 @@ export interface DeviceConfig {
   brightness: number;
   /** Legado: orden de ciclado del firmware antiguo. La web lo sincroniza. */
   toolOrder: string[];
-  /** Asignación Ctrl+tecla -> tool. 16 entradas, la 15 siempre null. */
+  /** Asignación Func+tecla -> tool. 16 entradas, la 15 siempre null. */
   slots?: (string | null)[];
   toolSwitch?: { keys: number[]; holdMs: number };
   scaleOrder: string[];

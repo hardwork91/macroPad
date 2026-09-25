@@ -2,7 +2,7 @@
 // y el log traduce cada pulsación a MIDI legible.
 
 import { useI18n } from "../i18n";
-import { CTRL_KEY_INDEX } from "../schema/types";
+import { FUNC_KEY_INDEX } from "../schema/types";
 import { useAppStore } from "../store/appStore";
 import { useLinkStore } from "../store/linkStore";
 import { PadGrid, PadCell } from "./PadGrid";
@@ -58,8 +58,8 @@ export function LiveView() {
       color,
       icon: k ? keyIcon(k) : "",
       pressed: pressed[i],
-      ctrl: i === CTRL_KEY_INDEX,
-      label: i === CTRL_KEY_INDEX ? "Ctrl" : undefined,
+      ctrl: i === FUNC_KEY_INDEX,
+      label: i === FUNC_KEY_INDEX ? "Func" : undefined,
     };
   });
 

@@ -5,7 +5,7 @@
 
 import { z } from "zod";
 import {
-  CTRL_KEY_INDEX,
+  FUNC_KEY_INDEX,
   DeviceConfig,
   GRID_COLS,
   KeyDef,
@@ -638,8 +638,8 @@ export function validateDevice(json: unknown, knownToolIds?: string[]): DeviceVa
         params: { count: device.slots.length, expected: NUM_KEYS },
       });
     }
-    if (device.slots[CTRL_KEY_INDEX] != null) {
-      issues.push({ level: "warning", path: `slots[${CTRL_KEY_INDEX}]`, msgKey: "val.ctrlSlotReserved" });
+    if (device.slots[FUNC_KEY_INDEX] != null) {
+      issues.push({ level: "warning", path: `slots[${FUNC_KEY_INDEX}]`, msgKey: "val.ctrlSlotReserved" });
     }
     if (knownToolIds) {
       device.slots.forEach((id, i) => {

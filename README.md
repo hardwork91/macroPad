@@ -11,7 +11,7 @@ Stream Deck, not like programming.
 
 ## Features
 
-- **Slots** — assign tools to the 15 available slots (key 16 is the Ctrl key:
+- **Slots** — assign tools to the 15 available slots (key 16 is the Func key:
   held on boot it enters the bootloader, held in use it opens the tool
   selector). Drag & drop to swap. Edits `device.json`, keeping the legacy
   `toolOrder` in sync for the current firmware.
@@ -79,7 +79,7 @@ Pad -> Web (async, while LIVE ON):
 
 Note for the firmware: the web writes a `slots` field (16 entries, tool id or
 `null`, entry 15 always `null`) into `device.json` — the target model for the
-Ctrl+key tool selector. `toolOrder` stays in sync for the current cycling
+Func+key tool selector. `toolOrder` stays in sync for the current cycling
 gesture.
 
 ## Data contract

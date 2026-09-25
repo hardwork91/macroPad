@@ -45,8 +45,8 @@ export const en: Record<string, string> = {
 
   // slots view
   "slots.title": "Tool slots",
-  "slots.subtitle": "Hold Ctrl (key 16) on the pad and this is what you'll see. Click a key to assign a tool; drag to swap.",
-  "slots.ctrlTooltip": "Key 16 is the Ctrl key: it opens the tool selector and can't hold a tool.",
+  "slots.subtitle": "Hold Func (key 16) on the pad and this is what you'll see. Click a key to assign a tool; drag to swap.",
+  "slots.ctrlTooltip": "Key 16 is the Func key: it opens the tool selector and can't hold a tool.",
   "slots.empty": "Empty",
   "slots.assignHint": "Click to assign a tool",
   "slots.assignTitle": "Assign tool to key {key}",
@@ -77,7 +77,7 @@ export const en: Record<string, string> = {
   "editor.jsonParseError": "That's not valid JSON",
   "editor.jsonInvalid": "The JSON has validation errors — fix them before applying",
   "editor.jsonApplied": "JSON applied",
-  "editor.ctrlKeyHint": "Key 16 is the Ctrl key at product level: held on boot it enters the bootloader, held in use it opens the tool selector. Its action here only runs on a plain press.",
+  "editor.ctrlKeyHint": "Key 16 is the Func key at product level: held on boot it enters the bootloader, held in use it opens the tool selector. Its action here only runs on a plain press.",
 
   // vars
   "vars.title": "Tool parameters (vars)",
@@ -187,7 +187,7 @@ export const en: Record<string, string> = {
   "val.scaleMissing": "scaleOrder references \"{name}\", which isn't defined in scales",
   "val.scaleMissingSuggest": "scaleOrder references \"{name}\", which isn't defined in scales — did you mean \"{suggestion}\"?",
   "val.slotsLength": "slots must have exactly {expected} entries (found {count})",
-  "val.ctrlSlotReserved": "slot 16 is the Ctrl key and must stay empty",
+  "val.ctrlSlotReserved": "slot 16 is the Func key and must stay empty",
   "val.slotUnknownTool": "references the tool \"{id}\", which isn't in the library",
 
   // --- v2 ---

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useI18n } from "../i18n";
 import { applySnippet, buildKeySnippet, planSnippetMerge } from "../schema/snippet";
 import {
-  CTRL_KEY_INDEX,
+  FUNC_KEY_INDEX,
   KeyCC,
   KeyDef,
   KeyHoldAssign,
@@ -97,7 +97,7 @@ export function KeyPanel({ toolId, tool, keyIndex }: { toolId: string; tool: Too
 
   return (
     <div className="key-panel">
-      {keyIndex === CTRL_KEY_INDEX && <p className="hint-box">{t("editor.ctrlKeyHint")}</p>}
+      {keyIndex === FUNC_KEY_INDEX && <p className="hint-box">{t("editor.ctrlKeyHint")}</p>}
 
       <SelectField
         label={t("key.type")}
