@@ -12,8 +12,12 @@ import intro from "../assets/octa-intro.webp";
 
 /** Lo que dura el clip. */
 const INTRO_MS = 4500;
-/** Cuando empieza el fundido: solapado con el final de la animacion. */
-const FADE_START_MS = 3500;
+/**
+ * El fundido arranca cuando el clip termina, no antes: se reproduce
+ * una sola vez y se queda quieto en su ultimo fotograma, que es el
+ * mismo logo al que funde.
+ */
+const FADE_START_MS = INTRO_MS;
 /** Lo que dura el fundido. Debe coincidir con la transicion del CSS. */
 const FADE_MS = 1000;
 
