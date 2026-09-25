@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useI18n } from "../i18n";
-import emblem from "../assets/octa-emblem.png";
+import logo from "../assets/octa-logo.png";
 import { serialSupported } from "../device/SerialDeviceLink";
 import { useAppStore } from "../store/appStore";
 import { useLinkStore } from "../store/linkStore";
@@ -33,8 +33,7 @@ export function Welcome() {
 
   return (
     <div className="welcome">
-      <img src={emblem} alt="" className="welcome-emblem" />
-      <h1 className="welcome-title">OCTA CTRL</h1>
+      <img src={logo} alt="OCTA CTRL" className="welcome-logo" />
       <p className="welcome-sub">{t("welcome.sub")}</p>
 
       {supported ? (

@@ -972,10 +972,39 @@ code {
   inset: 0;
   z-index: 200;
   background: #000;
-  display: grid;
-  place-items: center;
+  /* Columna, no centrado: dentro va una copia del layout de la
+     bienvenida para que el logo caiga en el mismo sitio. */
+  display: flex;
+  flex-direction: column;
   opacity: 1;
   transition: opacity 1s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* Ocupa el hueco de la barra superior, que en la bienvenida empuja
+   el contenido hacia abajo. */
+.splash-topbar-space {
+  /* La publica la propia barra al medirse; 60px solo cubre el instante
+     anterior a que exista. */
+  height: var(--topbar-h, 60px);
+  flex-shrink: 0;
+}
+
+/* Copia exacta de las reglas de <main>: el ancho y el padding del
+   contenedor tambien desplazan el logo. */
+.splash-main {
+  flex: 1;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 24px;
+}
+/* Todo menos el clip esta solo para ocupar espacio. */
+.splash-frame > *:not(.splash-motion) {
+  visibility: hidden;
+}
+/* Los espaciadores no deben reaccionar a nada. */
+.splash-frame button {
+  pointer-events: none;
 }
 .splash.leaving {
   opacity: 0;
@@ -983,8 +1012,6 @@ code {
 }
 
 .splash-motion {
-  width: clamp(130px, 26vmin, 230px);
-  height: auto;
   animation: splash-fade-in 0.4s ease-out both;
 }
 
@@ -1028,7 +1055,8 @@ code {
 
 /* Tablet y portatil estrecho */
 @media (max-width: 1100px) {
-  main {
+  main,
+  .splash-main {
     padding: 18px;
   }
   .editor-right {
@@ -1067,7 +1095,8 @@ code {
     min-width: 0;
     max-width: 100%;
   }
-  main {
+  main,
+  .splash-main {
     padding: 12px;
   }
 
@@ -1213,18 +1242,11 @@ body {
   padding: 24px;
 }
 
-.welcome-emblem {
-  width: clamp(90px, 18vmin, 140px);
+/* Mismo tamano que .splash-motion: el fundido no debe mover el logo. */
+.welcome-logo {
+  width: clamp(130px, 26vmin, 230px);
   height: auto;
-  opacity: 0.9;
-  filter: drop-shadow(0 0 24px rgba(124, 140, 248, 0.25));
-}
-
-.welcome-title {
-  font-size: clamp(20px, 4vw, 28px);
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  margin: 0;
+  filter: drop-shadow(0 0 24px rgba(124, 140, 248, 0.2));
 }
 
 .welcome-sub {

@@ -7,6 +7,7 @@
 // debajo sin que haya un momento muerto en negro.
 
 import { useEffect, useRef, useState } from "react";
+import { useI18n } from "../i18n";
 import intro from "../assets/octa-intro.webp";
 
 /** Lo que dura el clip. */
@@ -25,6 +26,7 @@ function prefersReducedMotion(): boolean {
 }
 
 export function Splash({ onDone }: { onDone: () => void }) {
+  const { t } = useI18n();
   const [leaving, setLeaving] = useState(false);
   const doneRef = useRef(false);
   const reduced = useRef(prefersReducedMotion()).current;
@@ -53,7 +55,29 @@ export function Splash({ onDone }: { onDone: () => void }) {
 
   return (
     <div className={`splash${leaving ? " leaving" : ""}`} role="presentation" aria-hidden={leaving}>
-      <img src={intro} alt="OCTA CTRL" className="splash-motion" />
+      {/*
+        El intro reproduce la MISMA estructura que la pantalla de
+        bienvenida, con todo oculto salvo el clip. Asi el logo cae
+        exactamente donde quedara el logo estatico y el fundido no lo
+        mueve de sitio, sea cual sea el tamano de la ventana: si se
+        compensara con un desplazamiento fijo, solo cuadraria a una
+        altura concreta.
+      */}
+      <div className="splash-topbar-space" aria-hidden="true" />
+      <div className="splash-main">
+        <div className="welcome splash-frame">
+          <img src={intro} alt="OCTA CTRL" className="welcome-logo splash-motion" />
+          <p className="welcome-sub" aria-hidden="true">
+            {t("welcome.sub")}
+          </p>
+          <button type="button" className="primary welcome-connect" aria-hidden="true" tabIndex={-1} disabled>
+            {t("conn.connect")}
+          </button>
+          <p className="welcome-hint" aria-hidden="true">
+            {t("welcome.hint")}
+          </p>
+        </div>
+      </div>
 
       <button type="button" className="splash-skip" onClick={() => setLeaving(true)}>
         skip

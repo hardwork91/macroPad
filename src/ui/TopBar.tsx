@@ -1,6 +1,6 @@
 // Barra superior: navegación, idioma, conexión y sincronización.
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import brandIcon from "../assets/octa-icon.png";
 import { useI18n } from "../i18n";
 import { hasErrors, validateDevice, validateTool } from "../schema/validate";
@@ -14,6 +14,22 @@ export function TopBar() {
   const { view, setView, device, tools, toast } = useAppStore();
   const { conn, connect, disconnect, pull, fwVersion, sync, syncing } = useLinkStore();
   const [connecting, setConnecting] = useState(false);
+  const barRef = useRef<HTMLElement>(null);
+
+  // El intro coloca su clip donde caera el logo de la bienvenida, y
+  // para eso necesita saber cuanto ocupa esta barra. Su altura depende
+  // del contenido (con o sin pestanas) y del ancho, asi que se publica
+  // medida en vez de repetirla como numero magico en el CSS.
+  useEffect(() => {
+    const el = barRef.current;
+    if (!el) return;
+    const publicar = () =>
+      document.documentElement.style.setProperty("--topbar-h", `${el.getBoundingClientRect().height}px`);
+    publicar();
+    const ro = new ResizeObserver(publicar);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   // Gate de sincronización: jamás viaja un JSON inválido al dispositivo.
   const slottedTools = useMemo(() => {
@@ -66,7 +82,7 @@ export function TopBar() {
   }
 
   return (
-    <header className="topbar">
+    <header className="topbar" ref={barRef}>
       <div className="brand">
         <img src={brandIcon} alt="" className="brand-icon" />
         <span className="brand-name">OCTA CTRL</span>
