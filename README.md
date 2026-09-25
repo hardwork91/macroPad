@@ -56,7 +56,9 @@ git push
 
 ## Device protocol (Web Serial, line-based, UTF-8, 115200 baud)
 
-Not yet implemented by the firmware; the app ships with a `MockDeviceLink`
+Implemented by `ESP32/esp32s3_tool_interpreter_v2` in the firmware repo, which
+requires "USB CDC On Boot: Enabled" so `Serial` is a CDC port inside the same
+composite USB device as MIDI. The app also ships a `MockDeviceLink`
 simulator that speaks the same protocol. All communication is isolated in
 `src/device/`.
 
