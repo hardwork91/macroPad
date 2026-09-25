@@ -1246,7 +1246,6 @@ body {
 .welcome-logo {
   width: clamp(130px, 26vmin, 230px);
   height: auto;
-  filter: drop-shadow(0 0 24px rgba(124, 140, 248, 0.2));
 }
 
 .welcome-sub {
