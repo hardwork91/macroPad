@@ -932,7 +932,7 @@ code {
   display: grid;
   place-items: center;
   opacity: 1;
-  transition: opacity 0.4s ease;
+  transition: opacity 1s cubic-bezier(0.4, 0, 0.6, 1);
 }
 .splash.leaving {
   opacity: 0;

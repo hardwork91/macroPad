@@ -19,12 +19,11 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // El intro cubre la carga inicial: para cuando termina, la
-  // biblioteca ya esta lista y no se ve ningun parpadeo.
-  if (!introDone) return <Splash onDone={() => setIntroDone(true)} />;
-
+  // Mientras la biblioteca carga, el intro es lo unico en pantalla.
+  // En cuanto esta lista se monta la interfaz DEBAJO del intro, para
+  // que el fundido de salida la revele en vez de saltar a ella.
   if (!ready) {
-    return <div className="loading">{t("common.loading")}</div>;
+    return introDone ? <div className="loading">{t("common.loading")}</div> : <Splash onDone={() => setIntroDone(true)} />;
   }
 
   return (
@@ -43,6 +42,8 @@ export default function App() {
           </button>
         ))}
       </div>
+
+      {!introDone && <Splash onDone={() => setIntroDone(true)} />}
     </>
   );
 }
