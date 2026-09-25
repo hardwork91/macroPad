@@ -8,10 +8,15 @@ import {
   CTRL_KEY_INDEX,
   KeyCC,
   KeyDef,
+  KeyHoldAssign,
+  KeyHoldSelect,
   KeyNote,
   KeyParam,
   KeyScaleNote,
+  KeySeqAction,
+  KeySeqStep,
   KnownKeyType,
+  MAX_SEQ_STEPS,
   ToolFile,
   isKnownKeyType,
 } from "../schema/types";
@@ -20,10 +25,12 @@ import { useAppStore } from "../store/appStore";
 import { noteName } from "../live/engine";
 import { ColorField, Modal, NumField, SelectField } from "./common";
 
-const TYPE_OPTIONS: KnownKeyType[] = ["none", "note", "scale_note", "chord", "cc", "param"];
+const TYPE_OPTIONS_V1: KnownKeyType[] = ["none", "note", "scale_note", "chord", "cc", "param"];
+const TYPE_OPTIONS_V2: KnownKeyType[] = ["seq_step", "seq_action", "hold_select", "hold_assign"];
 
-function defaultKey(type: KnownKeyType, prevColor?: string): KeyDef {
+function defaultKey(type: KnownKeyType, prevColor?: string, tool?: ToolFile): KeyDef {
   const color = prevColor ?? "7C8CF8";
+  const listVars = tool ? Object.entries(tool.vars).filter(([, d]) => d.values).map(([n]) => n) : [];
   switch (type) {
     case "note":
       return { type, note: 60, color };
@@ -35,6 +42,14 @@ function defaultKey(type: KnownKeyType, prevColor?: string): KeyDef {
       return { type, cc: 20, behavior: "momentary", pressValue: 127, releaseValue: 0, color };
     case "param":
       return { type, set: [{ var: "", delta: 1 }], flash: "FFFFFF", limitFlash: "FF0000" };
+    case "seq_step":
+      return { type, step: 0, color, playheadColor: "FFFFFF" };
+    case "seq_action":
+      return { type, action: "regenerate", color };
+    case "hold_select":
+      return { type, var: listVars[0] ?? "", color, selectedColor: "FFFFFF" };
+    case "hold_assign":
+      return { type, target: "ratchet", value: tool?.sequencer?.ratchet?.hits[0] ?? 12, color };
     default:
       return { type: "none" };
   }
@@ -88,11 +103,14 @@ export function KeyPanel({ toolId, tool, keyIndex }: { toolId: string; tool: Too
         label={t("key.type")}
         value={key.type}
         options={[
-          ...TYPE_OPTIONS.map((v) => ({ value: v, label: t(`key.type_${v}`) })),
+          ...TYPE_OPTIONS_V1.map((v) => ({ value: v, label: t(`key.type_${v}`) })),
+          ...(tool.schemaVersion >= 2
+            ? TYPE_OPTIONS_V2.map((v) => ({ value: v, label: t(`key.type_${v}`) }))
+            : []),
           ...(unknown ? [{ value: key.type, label: `${key.type} (?)` }] : []),
         ]}
         onChange={(v) => {
-          if (isKnownKeyType(v)) setKey(defaultKey(v, "color" in key ? (key.color as string) : undefined));
+          if (isKnownKeyType(v)) setKey(defaultKey(v, "color" in key ? (key.color as string) : undefined, tool));
         }}
       />
 
@@ -136,6 +154,10 @@ export function KeyPanel({ toolId, tool, keyIndex }: { toolId: string; tool: Too
 
       {key.type === "cc" && <CCForm keyDef={key as KeyCC} patchKey={patchKey} />}
       {key.type === "param" && <ParamForm keyDef={key as KeyParam} tool={tool} setKey={setKey} />}
+      {key.type === "seq_step" && <SeqStepForm keyDef={key as KeySeqStep} tool={tool} patchKey={patchKey} />}
+      {key.type === "seq_action" && <SeqActionForm keyDef={key as KeySeqAction} patchKey={patchKey} />}
+      {key.type === "hold_select" && <HoldSelectForm keyDef={key as KeyHoldSelect} tool={tool} patchKey={patchKey} />}
+      {key.type === "hold_assign" && <HoldAssignForm keyDef={key as KeyHoldAssign} tool={tool} patchKey={patchKey} />}
 
       <div className="key-actions">
         <button type="button" onClick={copyKey}>
@@ -303,6 +325,132 @@ function ParamForm({ keyDef, tool, setKey }: { keyDef: KeyParam; tool: ToolFile;
           </div>
         </>
       )}
+    </>
+  );
+}
+
+// ---------------- Primitivas del secuenciador (v2) ----------------
+
+function SeqStepForm({
+  keyDef,
+  tool,
+  patchKey,
+}: {
+  keyDef: KeySeqStep;
+  tool: ToolFile;
+  patchKey: (p: Partial<KeySeqStep>) => void;
+}) {
+  const { t } = useI18n();
+  const maxStep = (tool.sequencer?.maxSteps ?? MAX_SEQ_STEPS) - 1;
+  return (
+    <>
+      <NumField
+        label={t("key.step")}
+        value={keyDef.step}
+        min={0}
+        max={maxStep}
+        onChange={(v) => patchKey({ step: v })}
+        hint={`0 – ${maxStep}`}
+      />
+      <div className="field-row">
+        <ColorField label={t("key.color")} value={keyDef.color} onChange={(v) => patchKey({ color: v })} />
+        <ColorField
+          label={t("key.playheadColor")}
+          value={keyDef.playheadColor}
+          onChange={(v) => patchKey({ playheadColor: v })}
+        />
+      </div>
+    </>
+  );
+}
+
+function SeqActionForm({
+  keyDef,
+  patchKey,
+}: {
+  keyDef: KeySeqAction;
+  patchKey: (p: Partial<KeySeqAction>) => void;
+}) {
+  const { t } = useI18n();
+  return (
+    <>
+      <SelectField
+        label={t("key.seqAction")}
+        value={keyDef.action}
+        options={(["regenerate", "start", "stop", "toggle"] as const).map((a) => ({
+          value: a,
+          label: t(`key.action_${a}`),
+        }))}
+        onChange={(v) => patchKey({ action: v as KeySeqAction["action"] })}
+      />
+      <ColorField label={t("key.color")} value={keyDef.color} onChange={(v) => patchKey({ color: v })} />
+    </>
+  );
+}
+
+function HoldSelectForm({
+  keyDef,
+  tool,
+  patchKey,
+}: {
+  keyDef: KeyHoldSelect;
+  tool: ToolFile;
+  patchKey: (p: Partial<KeyHoldSelect>) => void;
+}) {
+  const { t } = useI18n();
+  const listVars = Object.entries(tool.vars).filter(([, d]) => d.values);
+  const chosen = tool.vars[keyDef.var];
+
+  return (
+    <>
+      <SelectField
+        label={t("key.holdVar")}
+        value={keyDef.var}
+        options={[{ value: "", label: "—" }, ...listVars.map(([n]) => ({ value: n, label: n }))]}
+        onChange={(v) => patchKey({ var: v })}
+      />
+      {listVars.length === 0 && <p className="hint-box">{t("val.holdSelectNeedsList", { key: "", name: keyDef.var })}</p>}
+      {chosen?.values && (
+        <p className="muted small">
+          {chosen.values.length} {t("vars.values")}: <code>{chosen.values.join(", ")}</code>
+        </p>
+      )}
+      <div className="field-row">
+        <ColorField label={t("key.color")} value={keyDef.color} onChange={(v) => patchKey({ color: v })} />
+        <ColorField
+          label={t("key.selectedColor")}
+          value={keyDef.selectedColor}
+          onChange={(v) => patchKey({ selectedColor: v })}
+        />
+      </div>
+    </>
+  );
+}
+
+function HoldAssignForm({
+  keyDef,
+  tool,
+  patchKey,
+}: {
+  keyDef: KeyHoldAssign;
+  tool: ToolFile;
+  patchKey: (p: Partial<KeyHoldAssign>) => void;
+}) {
+  const { t } = useI18n();
+  const hits = tool.sequencer?.ratchet?.hits ?? [];
+  return (
+    <>
+      <SelectField
+        label={t("key.ratchetHits")}
+        value={String(keyDef.value)}
+        options={
+          hits.length > 0
+            ? hits.map((h) => ({ value: String(h), label: String(h) }))
+            : [{ value: String(keyDef.value), label: String(keyDef.value) }]
+        }
+        onChange={(v) => patchKey({ value: parseInt(v, 10) })}
+      />
+      <ColorField label={t("key.color")} value={keyDef.color} onChange={(v) => patchKey({ color: v })} />
     </>
   );
 }

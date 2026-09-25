@@ -20,6 +20,14 @@ export function keyIcon(key: KeyDef | undefined): string {
       return "CC";
     case "param":
       return "⚙";
+    case "seq_step":
+      return "▮";
+    case "seq_action":
+      return "↻";
+    case "hold_select":
+      return "⇧";
+    case "hold_assign":
+      return "⇥";
     case "none":
     case undefined:
       return "";

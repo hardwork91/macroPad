@@ -18,6 +18,9 @@ import ccBasic from "../examples/cc_basic.json";
 import chromatic from "../examples/chromatic.json";
 import scalePlay from "../examples/scale_play.json";
 import chordPlay from "../examples/chord_play.json";
+import minorRatchet from "../examples/minor_ratchet.json";
+import randomMelody from "../examples/random_melody.json";
+import minorGlide from "../examples/minor_glide.json";
 
 const DB_KEY = "macropad-editor-v1";
 
@@ -77,7 +80,10 @@ function seedDevice(): DeviceConfig {
 }
 
 function seedTools(): Record<string, ToolFile> {
-  const list = [ccBasic, chromatic, scalePlay, chordPlay] as unknown as ToolFile[];
+  const list = [
+    ccBasic, chromatic, scalePlay, chordPlay,
+    minorRatchet, randomMelody, minorGlide,
+  ] as unknown as ToolFile[];
   const out: Record<string, ToolFile> = {};
   for (const t of list) out[t.id] = structuredClone(t);
   return out;

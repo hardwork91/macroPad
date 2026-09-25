@@ -1,16 +1,36 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "midiChannel": 1,
   "velocity": 100,
   "brightness": 40,
-  "toolOrder": ["cc_basic", "chromatic", "scale_play", "chord_play"],
+  "clock": {
+    "source": "external",
+    "bpm": 120,
+    "sendClock": false
+  },
+  "midiOut": { "usb": true, "trs": true },
+  "toolOrder": [
+    "cc_basic",
+    "chromatic",
+    "scale_play",
+    "chord_play",
+    "minor_ratchet",
+    "random_melody",
+    "minor_glide"
+  ],
+  "slots": [
+    "cc_basic", "chromatic", "scale_play", "chord_play",
+    "minor_ratchet", "random_melody", "minor_glide", null,
+    null, null, null, null,
+    null, null, null, null
+  ],
   "toolSwitch": { "keys": [14, 15], "holdMs": 2000 },
   "scaleOrder": ["major", "natural_minor", "harmonic_minor", "minor_pentatonic", "phrygian", "melodic_minor"],
   "scales": {
     "major":            [0, 2, 4, 5, 7, 9, 11],
     "natural_minor":    [0, 2, 3, 5, 7, 8, 10],
     "harmonic_minor":   [0, 2, 3, 5, 7, 8, 11],
-    "minor_pentatonic": [0, 3, 5, 7, 10, 12, 15],
+    "minor_pentatonic": [0, 3, 5, 7, 10],
     "phrygian":         [0, 1, 3, 5, 7, 8, 10],
     "melodic_minor":    [0, 2, 3, 5, 7, 9, 11]
   }

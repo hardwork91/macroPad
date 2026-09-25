@@ -52,7 +52,14 @@ function scaleInterval(device: DeviceConfig, scaleIdx: number, degree: number): 
   return table[degree % 7] + 12 * octave;
 }
 
+/** Minimo efectivo: 0 para vars de lista (el valor es un indice). */
+function effectiveMin(def: VarDef): number {
+  if (def.values) return 0;
+  return def.min ?? 0;
+}
+
 function effectiveMax(def: VarDef, vars: Record<string, number>): number {
+  if (def.values) return def.values.length - 1;
   if (def.maxVar !== undefined) return (vars[def.maxVar] ?? 0) + (def.maxOffset ?? 0);
   return def.max ?? 127;
 }
@@ -61,7 +68,8 @@ function revalidateVars(tool: ToolFile, vars: Record<string, number>) {
   for (const [name, def] of Object.entries(tool.vars)) {
     if (def.maxVar === undefined) continue;
     const v = vars[name] ?? 0;
-    if (v > effectiveMax(def, vars) || v < def.min) vars[name] = def.min;
+    const mn = effectiveMin(def);
+    if (v > effectiveMax(def, vars) || v < mn) vars[name] = mn;
   }
 }
 
@@ -70,7 +78,7 @@ function applyVarChange(tool: ToolFile, vars: Record<string, number>, name: stri
   const def = tool.vars[name];
   if (!def) return true;
   let v = vars[name] ?? 0;
-  const mn = def.min;
+  const mn = effectiveMin(def);
   const mx = effectiveMax(def, vars);
   let hitLimit = false;
 

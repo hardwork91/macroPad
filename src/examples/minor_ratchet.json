@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 2,
+  "id": "minor_ratchet",
+  "name": "Minor Ratchet",
+  "author": "portado del sketch de 7 modos",
+  "color": "00FF96",
+  "onExit": { "allNotesOff": true },
+  "vars": {
+    "steps":     { "init": 7, "values": [1, 2, 3, 4, 5, 6, 7, 8] },
+    "rate":      { "init": 3, "values": ["1/2", "1/4", "1/8", "1/16", "1/32"] },
+    "transpose": { "init": 3, "values": [-12, -7, -3, 0, 3, 7, 12] }
+  },
+  "sequencer": {
+    "type": "phrase",
+    "maxSteps": 8,
+    "noteRange": [24, 72],
+    "steps": "steps",
+    "rate": "rate",
+    "transpose": "transpose",
+    "scale": { "name": "natural_minor" },
+    "root": { "pitchClass": 0 },
+    "gate": { "percent": 80 },
+    "ratchet": {
+      "hits": [12, 8],
+      "velocityRamp": [100, 1]
+    }
+  },
+  "keys": [
+    { "type": "seq_step", "step": 0, "color": "00FF96", "playheadColor": "FFFFFF" },
+    { "type": "seq_step", "step": 1, "color": "00FF96", "playheadColor": "FFFFFF" },
+    { "type": "seq_step", "step": 2, "color": "00FF96", "playheadColor": "FFFFFF" },
+    { "type": "seq_step", "step": 3, "color": "00FF96", "playheadColor": "FFFFFF" },
+    { "type": "seq_step", "step": 4, "color": "00FF96", "playheadColor": "FFFFFF" },
+    { "type": "seq_step", "step": 5, "color": "00FF96", "playheadColor": "FFFFFF" },
+    { "type": "seq_step", "step": 6, "color": "00FF96", "playheadColor": "FFFFFF" },
+    { "type": "seq_step", "step": 7, "color": "00FF96", "playheadColor": "FFFFFF" },
+    { "type": "seq_action", "action": "regenerate", "color": "00FF96" },
+    { "type": "hold_select", "var": "steps", "color": "00C8FF", "selectedColor": "FFFFFF" },
+    { "type": "hold_select", "var": "rate", "color": "FF50FF", "selectedColor": "FFFFFF" },
+    { "type": "hold_select", "var": "transpose", "color": "FFB400", "selectedColor": "FFFFFF" },
+    { "type": "hold_assign", "target": "ratchet", "value": 12, "color": "FF7800" },
+    { "type": "hold_assign", "target": "ratchet", "value": 8, "color": "0078FF" },
+    { "type": "none" },
+    { "type": "none" }
+  ]
+}

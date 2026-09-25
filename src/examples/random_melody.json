@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 2,
+  "id": "random_melody",
+  "name": "Random Melody",
+  "author": "portado del sketch de 7 modos",
+  "color": "6E50FF",
+  "onExit": { "allNotesOff": true },
+  "vars": {
+    "steps":     { "init": 7, "values": [1, 2, 3, 4, 5, 6, 7, 8] },
+    "rate":      { "init": 3, "values": ["1/2", "1/4", "1/8", "1/16", "1/32"] },
+    "transpose": { "init": 3, "values": [-12, -7, -3, 0, 3, 7, 12] },
+    "mutation":  { "init": 0, "values": [0, 14, 29, 43, 57, 71, 86, 100] },
+    "scale":     { "init": 0, "min": 0, "max": 5, "wrap": true },
+    "root":      { "init": 0, "wrap": true, "values": [0, 2, 4, 5, 7, 9, 11] }
+  },
+  "sequencer": {
+    "type": "phrase",
+    "maxSteps": 8,
+    "noteRange": [24, 72],
+    "steps": "steps",
+    "rate": "rate",
+    "transpose": "transpose",
+    "scale": { "var": "scale" },
+    "root": { "var": "root" },
+    "gate": { "percent": 80 },
+    "mutation": "mutation"
+  },
+  "keys": [
+    { "type": "seq_step", "step": 0, "color": "6E50FF", "playheadColor": "FFFFFF" },
+    { "type": "seq_step", "step": 1, "color": "6E50FF", "playheadColor": "FFFFFF" },
+    { "type": "seq_step", "step": 2, "color": "6E50FF", "playheadColor": "FFFFFF" },
+    { "type": "seq_step", "step": 3, "color": "6E50FF", "playheadColor": "FFFFFF" },
+    { "type": "seq_step", "step": 4, "color": "6E50FF", "playheadColor": "FFFFFF" },
+    { "type": "seq_step", "step": 5, "color": "6E50FF", "playheadColor": "FFFFFF" },
+    { "type": "seq_step", "step": 6, "color": "6E50FF", "playheadColor": "FFFFFF" },
+    { "type": "seq_step", "step": 7, "color": "6E50FF", "playheadColor": "FFFFFF" },
+    { "type": "seq_action", "action": "regenerate", "color": "6E50FF" },
+    { "type": "hold_select", "var": "steps", "color": "00C8FF", "selectedColor": "FFFFFF" },
+    { "type": "hold_select", "var": "rate", "color": "FF50FF", "selectedColor": "FFFFFF" },
+    { "type": "hold_select", "var": "transpose", "color": "FFB400", "selectedColor": "FFFFFF" },
+    { "type": "param", "set": [{ "var": "scale", "delta": 1 }], "indicate": { "var": "scale", "color": "00FF96", "holdMs": 250 } },
+    { "type": "param", "set": [{ "var": "root", "delta": 1 }], "indicate": { "var": "root", "color": "FF5A00", "holdMs": 250 } },
+    { "type": "hold_select", "var": "mutation", "color": "FF2828", "selectedColor": "FFFFFF" },
+    { "type": "none" }
+  ]
+}
