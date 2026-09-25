@@ -266,7 +266,7 @@ code {
 .pad-grid {
   display: grid;
   grid-template-columns: repeat(8, minmax(58px, 84px));
-  gap: 10px;
+  gap: 12px;
   padding: 16px;
   background: linear-gradient(160deg, #131417, #0b0c0e 65%);
   border: 1px solid #202127;
@@ -279,50 +279,81 @@ code {
 .pad-cell {
   position: relative;
   aspect-ratio: 1;
-  border-radius: 11px;
-  border: 1px solid #2b2e35;
-  background: linear-gradient(180deg, #23252b 0%, #191a1f 55%, #121317 100%);
+  border: none;
+  border-radius: 12%;
+  background: linear-gradient(180deg, #282828, #202020);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 3px;
-  padding: 4px;
-  overflow: hidden;
-  transition: border-color 0.12s, transform 0.08s, box-shadow 0.15s;
+  /* El contenido se desplaza como la cara del ::before, para quedar
+     centrado sobre ella y no sobre el cuerpo. */
+  padding: 2px 9% 11% 3%;
+  transition: transform 0.08s, box-shadow 0.15s, filter 0.15s;
 
-  /* Relieve de keycap. Se compone por partes en variables para que el
-     halo del LED y el anillo de seleccion puedan sumarse sin pisarse:
-     una sola declaracion de box-shadow gana a las demas. */
-  --key-relief:
-    inset 0 1px 0 rgba(255, 255, 255, 0.09),
-    inset 0 -2px 3px rgba(0, 0, 0, 0.45),
-    0 2px 0 #0b0c0f,
-    0 4px 7px -2px rgba(0, 0, 0, 0.6);
+  /* Cuerpo de la tecla: paredes interiores y sombra proyectada. El
+     halo del LED y el anillo de seleccion se anteponen como variables
+     para que no los pise una sola declaracion de box-shadow. */
+  --key-body:
+    inset -8px 0 8px rgba(0, 0, 0, 0.25),
+    inset 0 -8px 8px rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(0, 0, 0, 0.75),
+    7px 14px 18px rgba(0, 0, 0, 0.4);
   --key-glow: 0 0 0 0 transparent;
   --key-ring: 0 0 0 0 transparent;
-  box-shadow: var(--key-ring), var(--key-glow), var(--key-relief);
+  box-shadow: var(--key-ring), var(--key-glow), var(--key-body);
 }
+
+/* La cara de la tecla, desplazada hacia arriba-izquierda: lo que
+   asoma abajo-derecha es el canto del cuerpo, y de ahi el volumen. */
+.pad-cell::before {
+  content: "";
+  position: absolute;
+  top: 4%;
+  left: 5%;
+  bottom: 17%;
+  right: 15%;
+  border-radius: 12%;
+  background: linear-gradient(90deg, #232323, #4a4a4a);
+  box-shadow:
+    -10px -10px 10px rgba(255, 255, 255, 0.25),
+    10px 5px 10px rgba(0, 0, 0, 0.15);
+  border-left: 1px solid #0004;
+  border-bottom: 1px solid #0004;
+  border-top: 1px solid #0009;
+  transition: inset 0.08s, box-shadow 0.15s;
+}
+
+/* Todo lo que va escrito en la tecla, por encima de la cara. */
+.pad-cell > * {
+  position: relative;
+  z-index: 1;
+}
+
 .pad-cell:hover:not(:disabled) {
-  border-color: #43464f;
   transform: translateY(-1px);
+  filter: brightness(1.12);
 }
 .pad-cell.selected {
-  border-color: var(--accent);
   --key-ring: 0 0 0 2px var(--accent);
 }
 .pad-cell.lit {
   /* El LED ilumina hacia fuera, como haria el difusor de la tecla. */
-  --key-glow: 0 0 14px -1px var(--cell-led, transparent);
+  --key-glow: 0 0 16px -1px var(--cell-led, transparent);
 }
 .pad-cell.pressed {
-  border-color: var(--cell-led, var(--accent));
-  --key-glow: 0 0 22px 2px var(--cell-led, var(--accent));
-  /* Hundida: se pierde el grosor y la luz superior pasa a sombra. */
-  --key-relief:
-    inset 0 2px 5px rgba(0, 0, 0, 0.65),
-    0 1px 0 #0b0c0f;
+  --key-glow: 0 0 24px 2px var(--cell-led, var(--accent));
   transform: translateY(2px);
+}
+/* Al pulsar, la cara se asienta sobre el cuerpo y pierde el reflejo. */
+.pad-cell.pressed::before {
+  top: 8%;
+  bottom: 13%;
+  right: 11%;
+  box-shadow:
+    -4px -4px 6px rgba(255, 255, 255, 0.1),
+    inset 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 .pad-cell.error {
   border-color: var(--danger);
