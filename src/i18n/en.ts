@@ -256,4 +256,7 @@ export const en: Record<string, string> = {
   "vars.toRange": "Convert back to a min/max range",
   "live.toggleFailed": "Could not switch live mode on the device",
   "conn.portBusy": "The port is busy. Close the Arduino IDE serial monitor (or whatever is holding it) and try again.",
+  "welcome.sub": "Plug in your pad and connect to edit its tools.",
+  "welcome.hint": "Your browser will ask which port to use. Close the Arduino IDE serial monitor first if you have it open.",
+  "welcome.loaded": "Connected — loaded {n} tool(s) from the pad",
 };

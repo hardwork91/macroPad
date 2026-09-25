@@ -54,6 +54,8 @@ interface AppState {
   duplicateTool: (id: string) => string;
   deleteTool: (id: string) => void;
   importTool: (tool: ToolFile) => void;
+  /** Sustituye biblioteca y device por lo que hay en el pad. */
+  replaceAll: (device: DeviceConfig, tools: ToolFile[]) => void;
 
   updateDevice: (updater: (d: DeviceConfig) => DeviceConfig) => void;
   setSlot: (slot: number, toolId: string | null) => void;
@@ -204,6 +206,16 @@ export const useAppStore = create<AppState>((set, get) => ({
   importTool: (tool) => {
     const tools = { ...get().tools, [tool.id]: tool };
     set({ tools });
+    schedulePersist(get);
+  },
+
+  // El pad es la fuente de verdad al conectar: lo que traiga sustituye
+  // a la biblioteca local en vez de mezclarse con ella, porque una
+  // fusion silenciosa dejaria tools fantasma que el aparato no tiene.
+  replaceAll: (device, tools) => {
+    const map: Record<string, ToolFile> = {};
+    for (const t of tools) map[t.id] = t;
+    set({ tools: map, device: syncToolOrder(device), selectedToolId: null, selectedKey: 0 });
     schedulePersist(get);
   },
 

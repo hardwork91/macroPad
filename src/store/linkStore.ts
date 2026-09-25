@@ -7,7 +7,22 @@ import { MockDeviceLink } from "../device/MockDeviceLink";
 import { SerialDeviceLink, serialSupported } from "../device/SerialDeviceLink";
 import { initLiveState, LiveState, LogEntry, MidiEvent, pressKey, releaseKey } from "../live/engine";
 import { DeviceConfig, ToolFile } from "../schema/types";
+import { validateDevice, validateTool } from "../schema/validate";
 import { useAppStore } from "./appStore";
+
+import deviceExample from "../examples/device.json";
+import ccBasic from "../examples/cc_basic.json";
+import chromatic from "../examples/chromatic.json";
+import scalePlay from "../examples/scale_play.json";
+import chordPlay from "../examples/chord_play.json";
+import minorRatchet from "../examples/minor_ratchet.json";
+import randomMelody from "../examples/random_melody.json";
+import minorGlide from "../examples/minor_glide.json";
+
+const toolExamples = [
+  ccBasic, chromatic, scalePlay, chordPlay,
+  minorRatchet, randomMelody, minorGlide,
+] as unknown as ToolFile[];
 
 export type LinkKind = "mock" | "serial";
 export type ConnState = "disconnected" | "connecting" | "connected";
@@ -40,6 +55,32 @@ interface LinkStoreState {
   setActiveTool: (toolId: string | null) => void;
   clearLog: () => void;
   sync: (device: DeviceConfig, tools: ToolFile[]) => Promise<void>;
+  /** Trae del pad su configuracion y sus tools. Devuelve cuantas leyo. */
+  pull: () => Promise<number>;
+}
+
+/**
+ * El simulador arranca con los mismos ficheros que el firmware graba
+ * en su primer arranque, de modo que ?mock=1 es una demo completa y
+ * no un pad vacio.
+ */
+function mockSeed(): Record<string, string> {
+  const files: Record<string, string> = {
+    "device.json": JSON.stringify(deviceExample, null, 2),
+  };
+  for (const t of toolExamples) {
+    files[`${(t as ToolFile).id}.json`] = JSON.stringify(t, null, 2);
+  }
+  return files;
+}
+
+/** ?mock=1 en la URL activa el simulador. No hay UI para esto a proposito. */
+function mockRequested(): boolean {
+  try {
+    return new URLSearchParams(window.location.search).has("mock");
+  } catch {
+    return false;
+  }
 }
 
 let link: DeviceLink | null = null;
@@ -95,9 +136,10 @@ export const useLinkStore = create<LinkStoreState>((set, get) => {
   }
 
   return {
-    // El aparato real es el caso normal; el simulador solo cuando no hay
-    // Web Serial (Firefox, Safari) o cuando se quiere probar sin hardware.
-    kind: serialSupported() ? "serial" : "mock",
+    // Siempre el aparato real. El simulador queda detras de ?mock=1:
+    // sirve para desarrollar sin hardware, pero no es una eleccion que
+    // le corresponda hacer al usuario.
+    kind: mockRequested() ? "mock" : "serial",
     conn: "disconnected",
     fwVersion: null,
     live: false,
@@ -120,7 +162,7 @@ export const useLinkStore = create<LinkStoreState>((set, get) => {
 
       set({ conn: "connecting" });
       try {
-        link = kind === "mock" ? new MockDeviceLink() : new SerialDeviceLink();
+        link = kind === "mock" ? new MockDeviceLink(mockSeed()) : new SerialDeviceLink();
         await link.connect();
         unsub = link.onEvent(handleEvent);
         const pong = await link.ping();
@@ -179,6 +221,45 @@ export const useLinkStore = create<LinkStoreState>((set, get) => {
     },
 
     clearLog: () => set({ log: [] }),
+
+    // Al conectar, lo que manda es el aparato. Se lee entero y se
+    // vuelca en la biblioteca, asi lo que ve el usuario en pantalla es
+    // de verdad lo que tiene en las manos.
+    pull: async () => {
+      if (!link) throw new Error("Not connected");
+
+      const files = await link.list();
+      const names = files.map((f) => f.name.replace(/^\//, ""));
+
+      if (!names.includes("device.json")) {
+        throw new Error("The pad has no device.json");
+      }
+
+      const rawDevice = await link.get("device.json");
+      const { device: parsedDevice, issues: devIssues } = validateDevice(JSON.parse(rawDevice));
+      if (!parsedDevice) {
+        throw new Error(`device.json on the pad is invalid: ${devIssues[0]?.msgKey ?? "?"}`);
+      }
+
+      const tools: ToolFile[] = [];
+      for (const name of names) {
+        if (name === "device.json" || !name.endsWith(".json")) continue;
+        try {
+          const { tool } = validateTool(JSON.parse(await link.get(name)), parsedDevice);
+          if (tool) tools.push(tool);
+        } catch {
+          // Un fichero roto en el pad no puede impedir leer los demas.
+        }
+      }
+
+      useAppStore.getState().replaceAll(parsedDevice, tools);
+
+      // La tool activa vuelve a calcularse sobre lo recien traido.
+      const first = (parsedDevice.slots ?? []).find((s) => s != null && tools.some((t) => t.id === s)) ?? null;
+      get().setActiveTool(first);
+
+      return tools.length;
+    },
 
     sync: async (device, tools) => {
       if (!link || get().syncing) return;

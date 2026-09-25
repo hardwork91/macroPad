@@ -19,6 +19,11 @@ Stream Deck, not like programming.
   (`none`, `note`, `scale_note`, `chord`, `cc`, `param`), tool parameters
   (`vars`) with declarative ranges, raw JSON tab (read-only + advanced edit
   toggle), copy/paste keys and export/import single-key snippets.
+- **One way in.** Open the page, press Connect, pick the port. The app then
+  reads the pad — `LIST` plus a `GET` per file — and shows you what is actually
+  on your device. There is no device-type selector and no offline mode: with no
+  pad there is nothing to edit. `?mock=1` runs a seeded simulator for working
+  without hardware, but it is deliberately not offered in the UI.
 - **Library** — local tools persisted in IndexedDB, import/export as `.json`
   files or pasted text, duplicate to remix; the 4 example tools preloaded.
 - **Validation** — zod-based schema + semantic pass (cross references, typo
