@@ -940,7 +940,7 @@ code {
 }
 
 .splash-motion {
-  width: clamp(260px, 52vmin, 460px);
+  width: clamp(130px, 26vmin, 230px);
   height: auto;
   animation: splash-fade-in 0.4s ease-out both;
 }
