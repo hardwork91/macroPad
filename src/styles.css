@@ -300,11 +300,12 @@ code {
   box-shadow: 0 0 0 1px var(--accent);
 }
 .pad-cell.lit {
-  box-shadow: inset 0 -14px 22px -14px var(--cell-led, transparent);
+  /* El LED ilumina hacia fuera, como haria el difusor de la tecla. */
+  box-shadow: 0 0 14px -1px var(--cell-led, transparent);
 }
 .pad-cell.pressed {
   border-color: var(--cell-led, var(--accent));
-  box-shadow: 0 0 12px 1px var(--cell-led, var(--accent)), inset 0 -14px 22px -14px var(--cell-led, transparent);
+  box-shadow: 0 0 22px 2px var(--cell-led, var(--accent));
   transform: translateY(1px);
 }
 .pad-cell.error {
