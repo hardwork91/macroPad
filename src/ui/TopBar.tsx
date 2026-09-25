@@ -72,13 +72,16 @@ export function TopBar() {
         <span className="brand-name">OCTA CTRL</span>
       </div>
 
-      <nav className="tabs">
-        {VIEWS.map((v) => (
-          <button key={v} type="button" className={view === v ? "tab active" : "tab"} onClick={() => setView(v)}>
-            {t(`nav.${v}`)}
-          </button>
-        ))}
-      </nav>
+      {/* Sin pad conectado no hay ninguna vista que ofrecer. */}
+      {conn === "connected" && (
+        <nav className="tabs">
+          {VIEWS.map((v) => (
+            <button key={v} type="button" className={view === v ? "tab active" : "tab"} onClick={() => setView(v)}>
+              {t(`nav.${v}`)}
+            </button>
+          ))}
+        </nav>
+      )}
 
       <div className="topbar-right">
         <select className="lang-select" value={lang} onChange={(e) => setLang(e.target.value as "en" | "es")} title={t("nav.language")}>
