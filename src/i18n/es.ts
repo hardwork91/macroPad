@@ -255,4 +255,5 @@ export const es: Record<string, string> = {
   "vars.toList": "Convertir en lista de valores",
   "vars.toRange": "Volver a un rango min/max",
   "live.toggleFailed": "No se pudo cambiar el modo en vivo en el dispositivo",
+  "conn.portBusy": "El puerto está ocupado. Cierra el monitor serie del IDE de Arduino (o lo que lo tenga tomado) e inténtalo otra vez.",
 };

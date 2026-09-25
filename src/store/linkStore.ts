@@ -95,7 +95,9 @@ export const useLinkStore = create<LinkStoreState>((set, get) => {
   }
 
   return {
-    kind: "mock",
+    // El aparato real es el caso normal; el simulador solo cuando no hay
+    // Web Serial (Firefox, Safari) o cuando se quiere probar sin hardware.
+    kind: serialSupported() ? "serial" : "mock",
     conn: "disconnected",
     fwVersion: null,
     live: false,

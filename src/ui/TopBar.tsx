@@ -36,7 +36,19 @@ export function TopBar() {
       await connect();
       toast("success", t("conn.connected"));
     } catch (err) {
-      const msg = err instanceof Error && err.message === "serial-unsupported" ? t("conn.serialUnsupported") : t("conn.failed");
+      // Cancelar el selector de puertos no es un fallo: no hay nada que avisar.
+      if (err instanceof DOMException && err.name === "NotFoundError") return;
+
+      let msg: string;
+      if (err instanceof Error && err.message === "serial-unsupported") {
+        msg = t("conn.serialUnsupported");
+      } else if (err instanceof DOMException && err.name === "NetworkError") {
+        // Puerto tomado por otro programa: el monitor serie del IDE es
+        // el culpable habitual, y el mensaje del navegador no lo dice.
+        msg = t("conn.portBusy");
+      } else {
+        msg = `${t("conn.failed")}: ${err instanceof Error ? err.message : String(err)}`;
+      }
       toast("error", msg);
     } finally {
       setConnecting(false);

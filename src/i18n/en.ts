@@ -255,4 +255,5 @@ export const en: Record<string, string> = {
   "vars.toList": "Convert to a list of values",
   "vars.toRange": "Convert back to a min/max range",
   "live.toggleFailed": "Could not switch live mode on the device",
+  "conn.portBusy": "The port is busy. Close the Arduino IDE serial monitor (or whatever is holding it) and try again.",
 };
