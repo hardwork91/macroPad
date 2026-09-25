@@ -78,7 +78,6 @@ export function PadGrid({ cells, onCellClick, onCellDown, onCellUp, draggable, o
             }
           >
             <span className="pad-num">{String(i + 1).padStart(2, "0")}</span>
-            {c.color && !c.ctrl && <span className="pad-dot" style={{ background: cssColor(c.color) }} />}
             {c.icon && <span className="pad-icon">{c.icon}</span>}
             {c.label && <span className="pad-label">{c.label}</span>}
             {c.sub && <span className="pad-sub">{c.sub}</span>}

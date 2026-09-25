@@ -367,17 +367,12 @@ code {
 }
 .pad-num {
   position: absolute;
-  top: 4px;
-  left: 6px;
+  top: 6px;
+  left: 12px;
+  z-index: 1;   /* por encima de la cara de la tecla */
   font-family: var(--mono);
-  font-size: 9px;
-  color: var(--text-faint);
-}
-.pad-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  box-shadow: 0 0 6px currentColor;
+  font-size: 16px;
+  color: #ffffff;
 }
 .pad-icon {
   font-size: 12px;
@@ -1121,9 +1116,10 @@ code {
     display: none; /* a este tamano el texto es ilegible; manda el color */
   }
   .pad-num {
-    font-size: 8px;
-    top: 2px;
-    left: 3px;
+    /* La tecla baja de ~38px: el numero se escala con ella. */
+    font-size: 11px;
+    top: 3px;
+    left: 5px;
   }
 
   .panel-card {

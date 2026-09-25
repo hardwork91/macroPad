@@ -23,7 +23,8 @@ export function SlotsView() {
       return { ctrl: true, label: "Func", disabled: true, title: t("slots.ctrlTooltip") };
     }
     const tool = id ? tools[id] : null;
-    if (!tool) return { label: "—", sub: t("slots.empty"), title: t("slots.assignHint") };
+    // Una tecla vacia se lee sola con el guion; la palabra sobra.
+    if (!tool) return { label: "—", title: t("slots.assignHint") };
     return { color: tool.color, lit: true, label: tool.name, title: `${tool.name} (${tool.id})` };
   });
 
